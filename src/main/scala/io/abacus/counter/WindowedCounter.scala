@@ -6,30 +6,24 @@ import org.cliffc.high_scale_lib.Counter
 import scala.collection.mutable.HashMap
 
 class WindowedCounter[T](buckets:Int) {
-  val data = new NonBlockingHashMap[T,Array[Counter]]()
-  val currentBucket = new Counter
+ private val data = new NonBlockingHashMap[T,Array[Counter]]()
+ private val currentBucket = new Counter
 
 
-  def count(thing:T) = {
+  def increment(thing:T) = {
     val index = currentBucket.longValue % buckets
-    countInBucket(thing,index.toInt)
-  }
-
-  def advanceBucket {
-    currentBucket.increment
-    resetAllCountsForBucket((currentBucket.get % buckets).toInt)
-
+    incrementWithBucket(thing,index.toInt)
   }
 
 
-  def countInBucket(thing:T, bucket:Int) = {
+  def incrementWithBucket(thing:T, bucket:Int) = {
     val value = getBuckets(thing)
     value(bucket).increment
 
   }
 
 
-  def computeCount(thing:T):Long = {
+  def count(thing:T):Long = {
     val array = data.get(thing)
     if(array == null) 0L
     else {
@@ -41,8 +35,33 @@ class WindowedCounter[T](buckets:Int) {
       }
       sum
     }
+  }
+
+  def counts:Map[T,Long] = {
+    val keys = data.keySet
+    val output = new HashMap[T,Long]()
+    val it = keys.iterator
+    while(it.hasNext) {
+      val thing = it.next
+      output.put(thing,count(thing))
+    }
+
+    output.toMap
 
   }
+
+  def advanceBucket() {
+    resetAllCountsForBucket(((currentBucket.get+1L) % buckets).toInt)
+    currentBucket.increment
+
+
+  }
+
+
+
+
+
+
 
   def resetAllCountsForBucket(bucket:Int) {
     val keys = data.keySet
@@ -60,18 +79,6 @@ class WindowedCounter[T](buckets:Int) {
   }
 
 
-  def aggregate:Map[T,Long] = {
-     val keys = data.keySet
-     val output = new HashMap[T,Long]()
-     val it = keys.iterator
-     while(it.hasNext) {
-      val thing = it.next
-      output.put(thing,computeCount(thing))
-     }
-
-     output.toMap
-
-  }
 
   private def getBuckets(thing:T) = {
     val array = data.get(thing)

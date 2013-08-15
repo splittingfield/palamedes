@@ -11,5 +11,4 @@
 *.swp
 *.swo
 *.xml
-/migrations/database.yml
 /project/project/target/
