@@ -1,4 +1,6 @@
-Palamedes
+Palamedes: [![Build Status](https://travis-ci.org/splittingfield/palamedes.png)](https://travis-ci.org/splittingfield/palamedes)
+
+
 =========
 
 We often need to count things. But you know, counting things can be
