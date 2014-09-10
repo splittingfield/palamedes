@@ -1,7 +1,7 @@
 package io.abacus.counter
 
 import org.scalatest.WordSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.ShouldMatchers
 import org.scalatest.ParallelTestExecution
 
 class RollingCounterSpec extends WordSpec with ShouldMatchers with ParallelTestExecution {
