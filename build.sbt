@@ -15,6 +15,7 @@ libraryDependencies ++= Seq(
 "com.rojoma" % "rojoma-json-v3_2.10" % "3.1.2" withSources() withJavadoc(),
 "org.apache.commons" % "commons-lang3" % "3.3.2",
 "joda-time" % "joda-time" % "2.1",
+ "org.joda" % "joda-convert" % "1.7",
 "org.mockito" % "mockito-core" % "1.9.5" withSources() withJavadoc(),
 "com.twitter" % "algebird_2.10" % "0.7.0" withSources() withJavadoc(),
 "com.twitter" % "algebird-core_2.10" % "0.7.0" withSources() withJavadoc(),
