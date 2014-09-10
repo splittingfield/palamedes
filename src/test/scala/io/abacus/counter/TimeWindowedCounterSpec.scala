@@ -2,7 +2,7 @@ package io.abacus.counter
 
 import org.scalatest.WordSpec
 import org.scalatest.ParallelTestExecution
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.ShouldMatchers
 
 class TimeWindowedCounterSpec extends WordSpec with ShouldMatchers with ParallelTestExecution {
   "The TimeWindowsCounter" should {
