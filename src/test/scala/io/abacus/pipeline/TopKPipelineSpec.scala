@@ -1,6 +1,5 @@
 package io.abacus.pipeline
 
-import io.abacus.pipeline.TopKPipeline
 import org.scalatest.WordSpec
 import org.scalatest.ShouldMatchers
 

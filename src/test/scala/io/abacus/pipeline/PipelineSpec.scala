@@ -1,6 +1,5 @@
 package io.abacus.pipeline
 
-import io.abacus.pipeline.Pipeline
 import org.scalatest.WordSpec
 import org.scalatest.ShouldMatchers
 import scala.collection.mutable.{Map =>  MMap, HashMap}
