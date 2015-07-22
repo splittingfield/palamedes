@@ -3,18 +3,16 @@ package io.abacus.soroban.elements
 import java.nio.ByteBuffer
 import java.text.NumberFormat
 import java.util.Locale
-import scala.{specialized => spec}
 
-trait Element[@spec(Int) T] {
-  def toBytes(t: T):Array[Byte]
-  def toInt(t: T):Option[Int]
+trait Element[@specialized(Int) T] {
+  def toBytes(t: T): Array[Byte]
+  def toInt(t: T): Option[Int]
 }
 
 object Element {
-
   implicit object StringElement extends Element[String] {
-    def toBytes(underlying: String) = underlying.getBytes
-    def toInt(underlying:String) = {
+    def toBytes(underlying: String): Array[Byte] = underlying.getBytes
+    def toInt(underlying:String): Option[Int] = {
       val nh = NumberFormat.getInstance(Locale.US)
       try {
         val int = nh.parse(underlying)
@@ -27,15 +25,15 @@ object Element {
   }
 
   implicit object IntElement extends Element[Int] {
-    def toBytes(underlying: Int) = {
-      val buf = new Array[Byte](4)
+    private val bufLen = 4
+    def toBytes(underlying: Int): Array[Byte] = {
+      val buf = new Array[Byte](bufLen)
       ByteBuffer
         .wrap(buf)
         .putInt(underlying)
       buf
     }
 
-    def toInt(t:Int) = Some(t)
+    def toInt(t: Int): Option[Int] = Some(t)
   }
-
 }

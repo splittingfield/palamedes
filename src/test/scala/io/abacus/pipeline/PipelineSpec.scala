@@ -1,36 +1,34 @@
 package io.abacus.pipeline
 
-import org.scalatest.WordSpec
-import org.scalatest.ShouldMatchers
-import scala.collection.mutable.{Map =>  MMap, HashMap}
+import org.scalatest.{ShouldMatchers, WordSpec}
+
+import scala.collection.mutable
 
 class PipelineSpec extends WordSpec with ShouldMatchers {
-  // Simple WordCounter to test things
-
   class StringToLength() extends Pipeline[String,Int,Int] {
     var count = 0
-    def process(elem:String) = { count+=elem.length; elem.length}
-    def results = count
+    def process(elem: String): Int = { count += elem.length; elem.length }
+    def results: Int = count
   }
-  class WordCounter() extends Pipeline[String,String,MMap[String,Int]] {
-    val words = HashMap.empty[String,Int].withDefaultValue(0)
-    def process(elem:String) = {
-      words.put(elem,words(elem)+1)
+  class WordCounter() extends Pipeline[String,String,mutable.Map[String,Int]] {
+    val words = mutable.HashMap.empty[String,Int].withDefaultValue(0)
+    def process(elem: String): String = {
+      words.put(elem,words(elem) + 1)
       elem
     }
-    def results = words
+    def results: mutable.Map[String,Int] = words
   }
 
   class Summer() extends Pipeline[Int,Int, Int] {
     var sum = 0
-    def process(elem:Int) = {sum+=elem; elem}
-    def results = sum
+    def process(elem: Int): Int = { sum += elem; elem }
+    def results: Int = sum
   }
 
-  class WordReduce() extends Pipeline[MMap[String,Int], Int,Int] {
-    var acc = 0;
-    def process(elem:MMap[String,Int]) = {val a = elem.map{ case (k,v) => v}.sum; acc+=a; a}
-    def results  = acc
+  class WordReduce() extends Pipeline[mutable.Map[String,Int], Int,Int] {
+    var acc = 0
+    def process(elem: mutable.Map[String,Int]): Int = { val a = elem.map{ case (k,v) => v}.sum; acc += a; a}
+    def results: Int = acc
   }
 
   "A simple smoke test for the Pipeline framework" should {
@@ -40,7 +38,7 @@ class PipelineSpec extends WordSpec with ShouldMatchers {
       a.process("b")
       a.process("b")
 
-      a.results should be (MMap("a"->1, "b"->2))
+      a.results should be (mutable.Map("a"->1, "b"->2))
     }
     "count words and their total length" in {
       val a = new WordCounter()
@@ -49,7 +47,7 @@ class PipelineSpec extends WordSpec with ShouldMatchers {
       b.process("b")
       b.process("b")
 
-      b.results should be ((MMap("a"->1, "b"->2),3))
+      b.results should be ((mutable.Map("a"->1, "b"->2),3))
     }
 
     "count words length and then pipe into sum with andThen" in {

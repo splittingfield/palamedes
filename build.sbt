@@ -18,6 +18,3 @@ libraryDependencies ++= Seq(
 
 scalacOptions ++= Seq("-optimize")
 testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-oD")
-
-// TODO: enable scalastyle build failures
-com.socrata.sbtplugins.StylePlugin.StyleKeys.styleFailOnError in Compile := false
