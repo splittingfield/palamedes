@@ -1,6 +1,6 @@
 package io.abacus.pipeline
 
-import org.joda.time.{DateTimeZone, DateTime}
+import org.joda.time.{DateTime, DateTimeZone}
 import org.scalatest.{Failed, ShouldMatchers, WordSpec}
 
 class DateParsingPipelineSpec extends WordSpec with ShouldMatchers {
@@ -27,14 +27,11 @@ class DateParsingPipelineSpec extends WordSpec with ShouldMatchers {
       val datetime = "05/12/1982"
       val a = new DateParsingPipeline[String]()
       val opt = a.process(datetime)
-      println(opt)
       opt match {
         case Some(d) => assert(d.isEqual(new DateTime(1982, 5, 12, 0, 0, 0)))
         case None => Failed
       }
-
     }
-
   }
 
   "The DateCardinalityPipeline" should {
@@ -53,8 +50,6 @@ class DateParsingPipelineSpec extends WordSpec with ShouldMatchers {
       a.process(Some(new DateTime(2014,8,27,11,20,3, DateTimeZone.UTC)))
       a.process(Some(new DateTime(2014,8,23,11,20,3, DateTimeZone.UTC)))
       a.process(Some(new DateTime(2014,10,29,11,20,3, DateTimeZone.UTC)))
-
-
       a.results should be (DateCounts(1,2,3))
     }
 
@@ -65,5 +60,4 @@ class DateParsingPipelineSpec extends WordSpec with ShouldMatchers {
       a.results should be (DateCounts(1,1,1))
     }
   }
-
 }

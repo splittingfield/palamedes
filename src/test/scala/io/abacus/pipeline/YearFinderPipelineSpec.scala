@@ -1,6 +1,5 @@
 package io.abacus.pipeline
 
-import io.abacus.pipeline.YearFinderPipeline
 import org.scalatest.{ShouldMatchers, WordSpec}
 
 class YearFinderPipelineSpec extends WordSpec with ShouldMatchers {

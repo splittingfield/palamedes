@@ -5,12 +5,10 @@ import io.abacus.soroban.elements.Element
 
 import scala.{specialized => spec}
 
-
-
-
-class CardinalityEstimationPipeline[@spec (Int) T]()(implicit ev: Element[T]) extends Pipeline[T,T,Long] {
-  val hll = new HyperLogLogMonoid(12)
-  var sumHll:HLL = hll.zero
+class CardinalityEstimationPipeline[@spec(Int) T]()(implicit ev: Element[T]) extends Pipeline[T,T,Long] {
+  private val hllBits = 12
+  val hll = new HyperLogLogMonoid(hllBits)
+  var sumHll: HLL = hll.zero
   override def results: Long = {
     val approxSize = hll.sizeOf(sumHll)
     approxSize.estimate
