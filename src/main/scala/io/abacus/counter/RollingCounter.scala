@@ -2,7 +2,7 @@ package io.abacus.counter
 
 import org.cliffc.high_scale_lib.{Counter, NonBlockingHashMap}
 
-import scala.collection.mutable
+import scala.collection.mutable.{HashMap => MHashMap}
 
 class RollingCounter[T](buckets:Int) {
  private val data = new NonBlockingHashMap[T,Array[Counter]]()
@@ -34,7 +34,7 @@ class RollingCounter[T](buckets:Int) {
 
   def counts: Map[T,Long] = {
     val keys = data.keySet
-    val output = new mutable.HashMap[T,Long]
+    val output = new MHashMap[T,Long]
     val it = keys.iterator
     while (it.hasNext) {
       val thing = it.next

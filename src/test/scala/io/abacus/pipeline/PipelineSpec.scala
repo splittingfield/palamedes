@@ -2,7 +2,7 @@ package io.abacus.pipeline
 
 import org.scalatest.{ShouldMatchers, WordSpec}
 
-import scala.collection.mutable
+import scala.collection.mutable.{HashMap => MHashMap, Map => MMap}
 
 class PipelineSpec extends WordSpec with ShouldMatchers {
   class StringToLength() extends Pipeline[String,Int,Int] {
@@ -10,13 +10,13 @@ class PipelineSpec extends WordSpec with ShouldMatchers {
     def process(elem: String): Int = { count += elem.length; elem.length }
     def results: Int = count
   }
-  class WordCounter() extends Pipeline[String,String,mutable.Map[String,Int]] {
-    val words = mutable.HashMap.empty[String,Int].withDefaultValue(0)
+  class WordCounter() extends Pipeline[String,String,MMap[String,Int]] {
+    val words = MHashMap.empty[String,Int].withDefaultValue(0)
     def process(elem: String): String = {
       words.put(elem,words(elem) + 1)
       elem
     }
-    def results: mutable.Map[String,Int] = words
+    def results: MMap[String,Int] = words
   }
 
   class Summer() extends Pipeline[Int,Int, Int] {
@@ -25,9 +25,9 @@ class PipelineSpec extends WordSpec with ShouldMatchers {
     def results: Int = sum
   }
 
-  class WordReduce() extends Pipeline[mutable.Map[String,Int], Int,Int] {
+  class WordReduce() extends Pipeline[MMap[String,Int], Int,Int] {
     var acc = 0
-    def process(elem: mutable.Map[String,Int]): Int = { val a = elem.map{ case (k,v) => v}.sum; acc += a; a}
+    def process(elem: MMap[String,Int]): Int = { val a = elem.map{ case (k,v) => v}.sum; acc += a; a}
     def results: Int = acc
   }
 
@@ -38,7 +38,7 @@ class PipelineSpec extends WordSpec with ShouldMatchers {
       a.process("b")
       a.process("b")
 
-      a.results should be (mutable.Map("a"->1, "b"->2))
+      a.results should be (MMap("a"->1, "b"->2))
     }
     "count words and their total length" in {
       val a = new WordCounter()
@@ -47,7 +47,7 @@ class PipelineSpec extends WordSpec with ShouldMatchers {
       b.process("b")
       b.process("b")
 
-      b.results should be ((mutable.Map("a"->1, "b"->2),3))
+      b.results should be ((MMap("a"->1, "b"->2),3))
     }
 
     "count words length and then pipe into sum with andThen" in {
