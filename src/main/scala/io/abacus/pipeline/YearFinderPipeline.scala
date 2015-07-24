@@ -4,7 +4,9 @@ import java.util.concurrent.atomic.AtomicLong
 
 import io.abacus.soroban.elements.Element
 
-class YearFinderPipeline[@specialized(Int) T](minYear:Int, maxYear:Int, threshold: Double)(implicit ev:Element[T])
+import scala.{specialized => spec}
+
+class YearFinderPipeline[@spec(Int) T](minYear:Int, maxYear:Int, threshold: Double)(implicit ev:Element[T])
   extends Pipeline[T,Option[Int],Boolean] {
   val possibleYearCount = new AtomicLong(0)
   val totalElements = new AtomicLong()

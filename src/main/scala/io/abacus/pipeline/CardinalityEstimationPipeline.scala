@@ -3,7 +3,9 @@ package io.abacus.pipeline
 import com.twitter.algebird.{HLL, HyperLogLogMonoid}
 import io.abacus.soroban.elements.Element
 
-class CardinalityEstimationPipeline[@specialized(Int) T]()(implicit ev: Element[T]) extends Pipeline[T,T,Long] {
+import scala.{specialized => spec}
+
+class CardinalityEstimationPipeline[@spec(Int) T]()(implicit ev: Element[T]) extends Pipeline[T,T,Long] {
   private val hllBits = 12
   val hll = new HyperLogLogMonoid(hllBits)
   var sumHll: HLL = hll.zero

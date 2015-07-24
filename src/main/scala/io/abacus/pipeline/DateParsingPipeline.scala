@@ -2,13 +2,12 @@ package io.abacus.pipeline
 
 import com.rojoma.json.v3.util.AutomaticJsonCodecBuilder
 import com.twitter.algebird.{HLL, HyperLogLogMonoid}
-import io.abacus.pipeline.DateCardinalityPipeline._
-import io.abacus.pipeline.DateParsingPipeline._
 import io.abacus.soroban.elements.Element
 import org.joda.time.DateTime
 import org.joda.time.format.{DateTimeFormat, ISODateTimeFormat}
 
 class DateParsingPipeline[T]()(implicit ev: Element[T]) extends Transformer[T,Option[DateTime]] {
+  import io.abacus.pipeline.DateParsingPipeline._ // scalastyle:ignore import.grouping
   override def process(elem: T): Option[DateTime] = {
     try {
       val date = isoFmt.parseDateTime(elem.toString)
@@ -19,8 +18,7 @@ class DateParsingPipeline[T]()(implicit ev: Element[T]) extends Transformer[T,Op
         try {
           val date = humanFmt.parseLocalDate(elem.toString).toDateTimeAtStartOfDay
           Some(date)
-        }
-        catch {
+        } catch {
           case e: Exception => None
         }
     }
@@ -38,6 +36,7 @@ object DateCounts {
 }
 
 class DateCardinalityPipeline() extends Pipeline[Option[DateTime], Option[DateTime], DateCounts ] {
+  import io.abacus.pipeline.DateCardinalityPipeline._ // scalastyle:ignore import.grouping
   private val hllbits = 12
   val hllYear = new HyperLogLogMonoid(hllbits)
   val hllYearMonth = new HyperLogLogMonoid(hllbits)

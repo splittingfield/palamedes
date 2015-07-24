@@ -4,7 +4,9 @@ import java.nio.ByteBuffer
 import java.text.NumberFormat
 import java.util.Locale
 
-trait Element[@specialized(Int) T] {
+import scala.{specialized => spec}
+
+trait Element[@spec(Int) T] {
   def toBytes(t: T): Array[Byte]
   def toInt(t: T): Option[Int]
 }

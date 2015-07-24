@@ -5,8 +5,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 import com.twitter.algebird.{SpaceSaver, SpaceSaverSemigroup}
 import io.abacus.soroban.elements.Element
 
+import scala.{specialized => spec}
+
 // NOT THREADSAFE BEFORE INITIAL SETUP
-class TopKPipeline[@specialized(Int) T](k: Int)(implicit ev: Element[T]) extends Pipeline[T,T,Seq[(T,Long)]] {
+class TopKPipeline[@spec(Int) T](k: Int)(implicit ev: Element[T]) extends Pipeline[T,T,Seq[(T,Long)]] {
   private val sumaryCap = 32
   val sssm = new SpaceSaverSemigroup[T]
   val processedFirst = new AtomicBoolean(false)
