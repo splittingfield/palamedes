@@ -9,7 +9,7 @@ scalaVersion := "2.10.4"
 resolvers += "boundary" at "http://maven.boundary.com/artifactory/repo"
 
 libraryDependencies ++= Seq(
-  "com.boundary" % "high-scale-lib" % "1.0.3",
+  "com.boundary" % "high-scale-lib" % "1.0.6",
 "org.scalatest" % "scalatest_2.10" % "2.2.0" % "test" withSources() withJavadoc(),
 "org.scalacheck" %% "scalacheck" % "1.10.0" % "test" withSources() withJavadoc(),
 "com.rojoma" % "rojoma-json-v3_2.10" % "3.1.2" withSources() withJavadoc(),
